@@ -3,15 +3,16 @@ var setsPlayed = 0;
 var games = { "stayed": 0, "random": 0, "switch": 0 }
 
 var generateRandomNo = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function monty_hall() {
     gameType = "stayed";
 
     for (var i = 0; i < 3000000; i++) {
+        var pick = null;
         var contestantPick = generateRandomNo(1, 3);
         var winningDoor = generateRandomNo(1, 3);
         var randomWrongDoor = generateRandomNo(1, 3);
@@ -22,35 +23,26 @@ function monty_hall() {
 
         switch(gameType) {
             case "stayed":
-                games.stayed += contestantPick === winningDoor ? 1 : 0;
-
-                gameType = "random";
+                pick = contestantPick;
                 break;
 
             case "random":
-                randomPick = generateRandomNo(1, 3);
-    
-                while (randomPick == randomWrongDoor) {
-                    randomPick = generateRandomNo(1, 3);
-                }
-    
-                games.random += randomPick === winningDoor ? 1 : 0;
-
-                gameType = "switched";
+                pick = generateRandomNo(1, 3);
+                while (pick === randomWrongDoor) {
+                  pick = generateRandomNo(1, 3);
+                };
                 break;
 
-            case "switched":
-                switchPick = generateRandomNo(1, 3);
-
-                while ([randomWrongDoor, contestantPick].includes(switchPick)) {
-                    switchPick = generateRandomNo(1, 3);
-                }
-
-                games.switch += switchPick === winningDoor ? 1 : 0;
-
-                gameType = "stayed";
+            case "switch":
+                pick = [1, 2, 3]
+                  .filter(i => ![randomWrongDoor, contestantPick].includes(i))
+                  .pop();
                 break;
         }
+
+        games[gameType] += pick === winningDoor ? 1 : 0;
+
+        gameType = gameType === "stayed" ? "random" : gameType === "random" ? "switch" : "stayed";
     }
 
     if (setsPlayed === 0) {

@@ -12,35 +12,32 @@ function monty_hall() {
     gameType = "stayed";
 
     for (var i = 0; i < 3000000; i++) {
-        var pick = null;
-        var contestantPick = generateRandomNo(1, 3);
         var winningDoor = generateRandomNo(1, 3);
+
+        var contestantPick, finalPick = generateRandomNo(1, 3);
+
         var randomWrongDoor = generateRandomNo(1, 3);
 
         while ([winningDoor, contestantPick].includes(randomWrongDoor)) {
             randomWrongDoor = generateRandomNo(1, 3);
         }
 
-        switch(gameType) {
-            case "stayed":
-                pick = contestantPick;
-                break;
 
+        switch(gameType) {
             case "random":
-                pick = generateRandomNo(1, 3);
-                while (pick === randomWrongDoor) {
-                  pick = generateRandomNo(1, 3);
+                while (finalPick === randomWrongDoor) {
+                  finalPick = generateRandomNo(1, 3);
                 };
                 break;
 
             case "switch":
-                pick = [1, 2, 3]
+                finalPick = [1, 2, 3]
                   .filter(i => ![randomWrongDoor, contestantPick].includes(i))
                   .pop();
                 break;
         }
 
-        games[gameType] += pick === winningDoor ? 1 : 0;
+        games[gameType] += finalPick === winningDoor ? 1 : 0;
 
         gameType = gameType === "stayed" ? "random" : gameType === "random" ? "switch" : "stayed";
     }
@@ -60,9 +57,9 @@ function monty_hall() {
 
     console.log("--------------------------------------------------------------------------------");
     console.log(`Set: ${setsPlayed}`);
-    console.log(`    Games won by keeping the original guess:   ${games.stayed} out of 1 million`);
-    console.log(`    Games won by randomly choosing to switch:  ${games.random} out of 1 million`);
-    console.log(`    Games won by switching the original guess: ${games.switch} out of 1 million`);
+    console.log(`    Games won by keeping the original guess:   ${games.stayed} out of ${setsPlayed} million`);
+    console.log(`    Games won by randomly choosing to switch:  ${games.random} out of ${setsPlayed} million`);
+    console.log(`    Games won by switching the original guess: ${games.switch} out of ${setsPlayed} million`);
     console.log("--------------------------------------------------------------------------------");
     console.log(`Chance by staying with original guess: ${((games.stayed / (setsPlayed*1000000))*100)}% (based on ${setsPlayed} million games)`);
     console.log(`Chance by randomly choosing to switch: ${((games.random / (setsPlayed*1000000))*100)}% (based on ${setsPlayed} million games)`);

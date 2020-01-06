@@ -57,9 +57,10 @@ function monty_hall() {
         console.log("********************************************************************************");
         console.log("Monty Hall Simulation:");
         console.log("********************************************************************************");
-        console.log("Each set consists of 2 million games of the Monty Hall Problem:");
-        console.log("    1 million games sticking with original guess on the three doors");
-        console.log("    1 million games switching guess after one wrong door is revealed");
+        console.log("Each set consists of 3 million games of the Monty Hall Problem:");
+        console.log("  1 million games sticking with original guess on the three doors");
+        console.log("  1 million games switching guess after one wrong door is revealed");
+        console.log("  1 million games randomly staying or swithing after one wrong door is revealed");
         console.log("********************************************************************************");
     }
 
